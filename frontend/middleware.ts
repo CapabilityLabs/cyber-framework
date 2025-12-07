@@ -19,7 +19,14 @@ export async function middleware(req: NextRequest) {
   try {
     let authResult: UserAuthorisationResult | null = null;
 
-    if (process.env.ENVIRONMENT != "local") {
+    // Bypass auth for Netlify deployments if configured
+    if (process.env.NETLIFY === "true" || process.env.ENVIRONMENT === "local") {
+      authResult = {
+        email: "test@i.ai.gov.uk",
+        isAuthorised: true,
+        authReason: "LOCAL_OR_NETLIFY"
+      }
+    } else {
       const token = req.headers.get("x-amzn-oidc-data"); // use "x-amzn-oidc-accesstoken" for keycloak
 
       if (!token) {
@@ -28,12 +35,6 @@ export async function middleware(req: NextRequest) {
       }
 
       authResult = await parseAuthToken(token);
-    } else {
-      authResult = {
-        email: "test@i.ai.gov.uk",
-        isAuthorised: true,
-        authReason: "LOCAL_TESTING"
-      }
     }
 
     if (authResult?.isAuthorised != true) {
