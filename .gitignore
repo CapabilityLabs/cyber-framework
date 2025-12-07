@@ -64,3 +64,6 @@ MANIFEST
 .vscode/
 *.swp
 *.swo
+
+# Exceptions
+!frontend/lib/
