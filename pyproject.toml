@@ -33,7 +33,7 @@ testpaths = [
 ]
 
 [tool.poetry]
-name = "gdd-cap-platform"
+name = "cyber-framework"
 authors = ["i.AI <i-dot-ai-enquiries@cabinetoffice.gov.uk>"]
 license = "MIT"
 readme = "README.md"

@@ -9,7 +9,7 @@ terraform {
   required_version = ">= 1.2.2"
 
   backend "s3" {
-    key = "gdd-cap-platform/terraform.tfstate"
+    key = "cyber-framework/terraform.tfstate"
   }
 
 }

@@ -16,7 +16,7 @@ services:
       retries: 3
       start_period: 3s
     networks:
-      - gdd-cap-platform-network
+      - cyber-framework-network
     
 
 
@@ -30,7 +30,7 @@ services:
     env_file:
       - .env
     networks:
-      - gdd-cap-platform-network
+      - cyber-framework-network
     
     depends_on:
       backend:
@@ -40,5 +40,5 @@ services:
     
 
 networks:
-  gdd-cap-platform-network:
+  cyber-framework-network:
     driver: bridge

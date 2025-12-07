@@ -5,7 +5,7 @@
   "context": {
     "cookiecutter": {
       "project_name": "GDD Capability Platform",
-      "app_name": "gdd-cap-platform",
+      "app_name": "cyber-framework",
       "_copy_without_render": [
         "*.html",
         "*.js",
@@ -15,7 +15,7 @@
       "backend_framework": "fastapi",
       "database_backend": "None",
       "_integration_test": "false",
-      "__perms_boundary_app_name": "gdd-cap-platform",
+      "__perms_boundary_app_name": "cyber-framework",
       "owner": "Daniel James",
       "email_address": "daniel.james@example.com",
       "_template": "git@github.com:i-dot-ai/i-dot-ai-cookiecutter.git"

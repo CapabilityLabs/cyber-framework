@@ -15,7 +15,7 @@ module "backend" {
   #source                      = "../../i-dot-ai-core-terraform-modules//modules/infrastructure/ecs" # For testing local changes
   source                       = "git::https://github.com/i-dot-ai/i-dot-ai-core-terraform-modules.git//modules/infrastructure/ecs?ref=v5.7.0-ecs"
   image_tag                    = var.image_tag
-  ecr_repository_uri           = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/gdd-cap-platform-backend"
+  ecr_repository_uri           = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/cyber-framework-backend"
   vpc_id                       = data.terraform_remote_state.vpc.outputs.vpc_id
   private_subnets              = data.terraform_remote_state.vpc.outputs.private_subnets
   host                         = local.host_backend
@@ -25,8 +25,8 @@ module "backend" {
   ecs_cluster_name             = data.terraform_remote_state.platform.outputs.ecs_cluster_name
   task_additional_iam_policies = local.additional_policy_arns
   certificate_arn              = module.acm_certificate.arn
-  target_group_name_override   =  "gdd-cap-platform-be-${var.env}-tg"
-  permissions_boundary_name    = "infra/i-dot-ai-${var.env}-gdd-cap-platform-perms-boundary-app"
+  target_group_name_override   =  "cyber-framework-be-${var.env}-tg"
+  permissions_boundary_name    = "infra/i-dot-ai-${var.env}-cyber-framework-perms-boundary-app"
 
   https_listener_arn            = module.frontend.https_listener_arn
   service_discovery_service_arn = aws_service_discovery_service.service_discovery_service.arn
@@ -46,11 +46,11 @@ module "backend" {
     "ENVIRONMENT" : terraform.workspace,
     "APP_NAME" : "${local.name}-backend"
     "PORT" : local.backend_port,
-    "REPO" : "gdd-cap-platform",
+    "REPO" : "cyber-framework",
     "APP_URL": aws_route53_record.type_a_record.fqdn,
     "AUTH_API_URL": data.aws_ssm_parameter.auth_api_invoke_url.value,
     "AWS_ACCOUNT_ID": data.aws_caller_identity.current.account_id,
-    "DOCKER_BUILDER_CONTAINER": "gdd-cap-platform",
+    "DOCKER_BUILDER_CONTAINER": "cyber-framework",
     "AUTH_PROVIDER_PUBLIC_KEY": data.aws_ssm_parameter.auth_provider_public_key.value,
   }
 
@@ -82,7 +82,7 @@ module "frontend" {
   #source                      = "../../i-dot-ai-core-terraform-modules//modules/infrastructure/ecs" # For testing local changes
   source                       = "git::https://github.com/i-dot-ai/i-dot-ai-core-terraform-modules.git//modules/infrastructure/ecs?ref=v5.7.0-ecs"
   image_tag                    = var.image_tag
-  ecr_repository_uri           = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/gdd-cap-platform-frontend"
+  ecr_repository_uri           = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/cyber-framework-frontend"
   vpc_id                       = data.terraform_remote_state.vpc.outputs.vpc_id
   private_subnets              = data.terraform_remote_state.vpc.outputs.private_subnets
   host                         = local.host
@@ -92,15 +92,15 @@ module "frontend" {
   ecs_cluster_name             = data.terraform_remote_state.platform.outputs.ecs_cluster_name
   create_listener              = true
   certificate_arn              = module.acm_certificate.arn
-  target_group_name_override   = "gdd-cap-platform-fe-${var.env}-tg"
-  permissions_boundary_name    = "infra/i-dot-ai-${var.env}-gdd-cap-platform-perms-boundary-app"
+  target_group_name_override   = "cyber-framework-fe-${var.env}-tg"
+  permissions_boundary_name    = "infra/i-dot-ai-${var.env}-cyber-framework-perms-boundary-app"
 
   environment_variables = {
     "ENVIRONMENT" : terraform.workspace,
     "APP_NAME" : "${local.name}-frontend"
     "PORT" : local.frontend_port,
-    "REPO" : "gdd-cap-platform",
-    "DOCKER_BUILDER_CONTAINER": "gdd-cap-platform",
+    "REPO" : "cyber-framework",
+    "DOCKER_BUILDER_CONTAINER": "cyber-framework",
     "AUTH_PROVIDER_PUBLIC_KEY": data.aws_ssm_parameter.auth_provider_public_key.value,
     "AUTH_API_URL": data.aws_ssm_parameter.auth_api_invoke_url.value,
     
@@ -175,7 +175,7 @@ module "sns_topic" {
   name                         = local.name
   slack_webhook                = data.aws_secretsmanager_secret_version.platform_slack_webhook.secret_string
 
-  permissions_boundary_name    = "infra/i-dot-ai-${var.env}-gdd-cap-platform-perms-boundary-app"
+  permissions_boundary_name    = "infra/i-dot-ai-${var.env}-cyber-framework-perms-boundary-app"
 }
 
 module "backend-ecs-alarm" {

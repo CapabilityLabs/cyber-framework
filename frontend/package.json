@@ -1,5 +1,5 @@
 {
-  "name": "gdd-cap-platform",
+  "name": "cyber-framework",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -29,6 +29,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.15.1",
     "@tailwindcss/postcss": "^4.1.4",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.2",
