@@ -13,7 +13,7 @@ import { notFound } from "next/navigation";
 
 export default function RoleDetailPage() {
   const params = useParams();
-  const roleId = params.id as string;
+  const roleId = params?.id as string;
   const role = roles.find((r) => r.id === roleId);
 
   if (!role) {

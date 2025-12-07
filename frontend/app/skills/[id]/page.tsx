@@ -11,7 +11,7 @@ import { skills, roles } from "@/data/roles";
 
 export default function SkillDetailPage() {
   const params = useParams();
-  const skillId = params.id as string;
+  const skillId = params?.id as string;
   const skill = skills.find((s) => s.id === skillId);
 
   if (!skill) {
