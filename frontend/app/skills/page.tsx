@@ -89,7 +89,7 @@ export default function SkillsPage() {
 
           {filteredSkills.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-xl text-muted-foreground">No skills found matching "{searchTerm}"</p>
+              <p className="text-xl text-muted-foreground">No skills found matching &quot;{searchTerm}&quot;</p>
             </div>
           )}
         </div>
