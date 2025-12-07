@@ -13,8 +13,8 @@ import { useSearchParams } from "next/navigation";
 
 function RolesContent() {
   const searchParams = useSearchParams();
-  const initialQuery = searchParams.get("q") || "";
-  const initialCategory = searchParams.get("category") || "all";
+  const initialQuery = searchParams?.get("q") || "";
+  const initialCategory = searchParams?.get("category") || "all";
 
   const [searchTerm, setSearchTerm] = useState(initialQuery);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
