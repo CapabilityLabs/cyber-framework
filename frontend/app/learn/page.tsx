@@ -19,7 +19,7 @@ import { useSearchParams } from "next/navigation";
 
 function LearningContent() {
   const searchParams = useSearchParams();
-  const initialQuery = searchParams.get("q") || "";
+  const initialQuery = searchParams?.get("q") || "";
   
   const [searchTerm, setSearchTerm] = useState(initialQuery);
   const [supplierType, setSupplierType] = useState<string>("all");
