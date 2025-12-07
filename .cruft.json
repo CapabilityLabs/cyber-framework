@@ -1,0 +1,25 @@
+{
+  "template": "git@github.com:i-dot-ai/i-dot-ai-cookiecutter.git",
+  "commit": "798d5441011d4701bf26cf465cd3a07d966c69e8",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "GDD Capability Platform",
+      "app_name": "gdd-cap-platform",
+      "_copy_without_render": [
+        "*.html",
+        "*.js",
+        "*.css"
+      ],
+      "frontend_framework": "nextjs",
+      "backend_framework": "fastapi",
+      "database_backend": "None",
+      "_integration_test": "false",
+      "__perms_boundary_app_name": "gdd-cap-platform",
+      "owner": "Daniel James",
+      "email_address": "daniel.james@example.com",
+      "_template": "git@github.com:i-dot-ai/i-dot-ai-cookiecutter.git"
+    }
+  },
+  "directory": "templates/webapp-ecs"
+}

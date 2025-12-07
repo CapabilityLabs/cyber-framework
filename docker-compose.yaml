@@ -1,0 +1,44 @@
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    container_name: fastapi
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/api/healthcheck"]
+      interval: 3s
+      timeout: 2s
+      retries: 3
+      start_period: 3s
+    networks:
+      - gdd-cap-platform-network
+    
+
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    container_name: nextjs
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
+    networks:
+      - gdd-cap-platform-network
+    
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+     - BACKEND_URL=http://backend:8080
+    
+
+networks:
+  gdd-cap-platform-network:
+    driver: bridge
