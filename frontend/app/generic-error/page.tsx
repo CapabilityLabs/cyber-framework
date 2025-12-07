@@ -47,7 +47,7 @@ function genericError(): React.JSX.Element {
           }}
         >
           Something went wrong when accessing this page. Please
-          try again later, or contact i.AI support if the issue persists.
+          try again later, or contact support if the issue persists.
         </p>
       </div>
     </div>
