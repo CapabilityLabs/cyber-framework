@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { CSSProperties, FormEvent, useState, useRef, useEffect } from "react";
+import { CSSProperties, FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Search, Shield, Layers, TrendingUp, Menu, X } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
+import { roles } from "@/data/roles";
 
 type NavItem = {
   key: string;
@@ -58,6 +60,7 @@ const Header = () => {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -66,13 +69,61 @@ const Header = () => {
     }
   }, [searchOpen]);
 
+  const filteredRoles = useMemo(() => {
+    if (!query || query.length < 2) return [];
+    const searchLower = query.toLowerCase();
+    return roles
+      .filter(
+        (role) =>
+          role.title.toLowerCase().includes(searchLower) ||
+          role.description.toLowerCase().includes(searchLower) ||
+          role.skills.some((skill) => skill.toLowerCase().includes(searchLower)) ||
+          role.synonyms?.some((synonym) => synonym.toLowerCase().includes(searchLower)),
+      )
+      .slice(0, 5);
+  }, [query]);
+
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!query.trim()) return;
     setOpen(false);
     setSearchOpen(false);
+    setShowAutocomplete(false);
     // Redirect to the roles search page for now as it's the main search function
     router.push(`/roles?q=${encodeURIComponent(query.trim())}`);
+  };
+
+  const handleSelectRole = (id: string) => {
+    setShowAutocomplete(false);
+    setOpen(false);
+    setSearchOpen(false);
+    router.push(`/roles/${id}`);
+  };
+
+  const renderAutocomplete = () => {
+    if (!showAutocomplete || filteredRoles.length === 0) return null;
+    return (
+      <div className="absolute left-0 right-0 top-full z-50 mt-2">
+        <Command className="rounded-lg border bg-white shadow-xl">
+          <CommandList>
+            <CommandGroup heading="Suggested roles">
+              {filteredRoles.map((role) => (
+                <CommandItem
+                  key={role.id}
+                  onSelect={() => handleSelectRole(role.id)}
+                  className="cursor-pointer py-3"
+                >
+                  <div className="flex flex-col gap-1">
+                    <span className="font-medium text-zinc-900">{role.title}</span>
+                    <span className="text-xs text-zinc-500">{role.category}</span>
+                  </div>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </div>
+    );
   };
 
   return (
@@ -151,9 +202,12 @@ const Header = () => {
             name="q"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
+            onFocus={() => setShowAutocomplete(true)}
+            onBlur={() => setTimeout(() => setShowAutocomplete(false), 150)}
             placeholder="Search roles..."
             className="h-8 border-none bg-transparent pl-2 text-sm focus-visible:ring-0 placeholder:text-zinc-400"
           />
+          {renderAutocomplete()}
         </form>
 
         {/* Mobile Menu Trigger */}
@@ -179,9 +233,12 @@ const Header = () => {
                         type="search"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
+                        onFocus={() => setShowAutocomplete(true)}
+                        onBlur={() => setTimeout(() => setShowAutocomplete(false), 150)}
                         placeholder="Search roles, skills, resources..."
                         className="h-10 w-full bg-white pl-10"
                     />
+                    {renderAutocomplete()}
                     <Button 
                         type="button" 
                         variant="ghost" 
@@ -211,9 +268,12 @@ const Header = () => {
                 name="q"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
+                onFocus={() => setShowAutocomplete(true)}
+                onBlur={() => setTimeout(() => setShowAutocomplete(false), 150)}
                 placeholder="Search roles..."
                 className="h-9 border-none bg-transparent pl-2 text-base focus-visible:ring-0 placeholder:text-zinc-400"
               />
+              {renderAutocomplete()}
             </form>
 
             {/* Mobile Navigation */}
