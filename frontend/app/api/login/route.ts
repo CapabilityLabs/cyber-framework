@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const SITE_PASSWORD = "capability2026";
-
 export async function POST(request: NextRequest) {
   const { password } = await request.json();
+  const sitePassword = process.env.SITE_PASSWORD;
 
-  if (password === SITE_PASSWORD) {
+  if (!sitePassword) {
+    console.error("SITE_PASSWORD environment variable is not set");
+    return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
+  }
+
+  if (password === sitePassword) {
     const response = NextResponse.json({ success: true });
     response.cookies.set("site-auth", "authenticated", {
       httpOnly: true,
